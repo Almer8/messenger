@@ -38,7 +38,7 @@
                   <Font name="Times New Roman" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="error_label" layoutX="41.0" layoutY="148.0" prefHeight="19.0" prefWidth="280.0" text="There is no server with this IP address!" textFill="RED" visible="false">
+            <Label fx:id="error_label" layoutX="41.0" layoutY="148.0" prefHeight="19.0" prefWidth="280.0" textFill="RED">
                <font>
                   <Font name="Times New Roman Bold" size="16.0" />
                </font>

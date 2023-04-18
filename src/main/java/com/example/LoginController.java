@@ -38,9 +38,18 @@ public class LoginController {
     }
     catch (java.net.UnknownHostException e){
         System.out.println(e);
-        error_label.setVisible(true);
+        error_label.setText("There is no server with this IP address!");
         App.changeStageResizableProperty(); //temp
         App.setRoot("ClientWindow"); //temp
+    }
+    catch(java.net.ConnectException e){
+        error_label.setText("Connection refused!"); 
+    }
+    catch(java.net.SocketException e){
+        error_label.setText("Network is unreachable!");
+    }
+    catch(Exception e){
+        System.out.println(e);
     }
     
     return null;
