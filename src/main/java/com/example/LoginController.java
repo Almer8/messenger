@@ -28,19 +28,20 @@ public class LoginController {
 
     @FXML
     Socket createSocket() throws Exception{
-        //TODO: move to try section later
-        data.setUsername(getUsernameField());
+        
         try{
         Socket socket = new Socket(getIPField(), 8081);
-        App.setRoot("ClientWindow");
-        App.changeStageResizableProperty();
+        data.setUsername(getUsernameField());
+        
+        
         return socket;
     }
+
+
+
     catch (java.net.UnknownHostException e){
         System.out.println(e);
         error_label.setText("There is no server with this IP address!");
-        App.changeStageResizableProperty(); //temp
-        App.setRoot("ClientWindow"); //temp
     }
     catch(java.net.ConnectException e){
         error_label.setText("Connection refused!"); 
