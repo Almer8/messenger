@@ -14,11 +14,9 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        App.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("loginForm.fxml"));
         stage.setTitle("Login");
         stage.setScene(new Scene(root));
@@ -26,15 +24,7 @@ public class App extends Application {
         stage.show();
     
     }
-    static void changeStageResizableProperty(){
-        if(stage.resizableProperty().get()){
-            stage.setResizable(false);
-        }
-        else{
-            stage.setResizable(true);
-        }
-    }
-
+    
     public static void main(String[] args) {
         launch();
     }

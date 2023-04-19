@@ -2,6 +2,9 @@ package com.example;
 
 import java.net.Socket;
 
+
+import com.example.Singletons.DataSingleton;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,9 +19,26 @@ public class LoginController {
     private Label error_label;
     DataSingleton data = DataSingleton.getInstance();
     @FXML
-    String getIPField(){
-        
-        return ip_field.getText();
+    String getIP(){
+        String[] parts = ip_field.getText().split(":");
+        try {
+            return parts[0];
+            
+        } catch (Exception e) {
+            error_label.setText("Incorrect IP address!"); 
+        }
+        return null;
+    }
+    Integer getPort(){
+        String[] parts = ip_field.getText().split(":");
+        try{
+        return Integer.parseInt(parts[1]);
+    }
+    catch(Exception e){
+        error_label.setText("Incorrect port!");
+    }
+    return null;
+
     }
     @FXML
     String getUsernameField(){
@@ -30,10 +50,8 @@ public class LoginController {
     Socket createSocket() throws Exception{
         
         try{
-        Socket socket = new Socket(getIPField(), 8081);
+        Socket socket = new Socket(getIP(), getPort());
         data.setUsername(getUsernameField());
-        
-        
         return socket;
     }
 
