@@ -1,13 +1,17 @@
 package com.example;
 
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
-
-import com.example.Singletons.DataSingleton;
-
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 
 public class LoginController {
@@ -17,6 +21,8 @@ public class LoginController {
     private TextField usernameField;
     @FXML
     private Label error_label;
+    @FXML
+    private Button okButton;
     DataSingleton data = DataSingleton.getInstance();
     @FXML
     String getIP(){
@@ -29,7 +35,7 @@ public class LoginController {
         }
         return null;
     }
-    Integer getPort(){
+    Integer getPort() throws Exception{
         String[] parts = ip_field.getText().split(":");
         try{
         return Integer.parseInt(parts[1]);
@@ -51,7 +57,19 @@ public class LoginController {
         
         try{
         Socket socket = new Socket(getIP(), getPort());
+        PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+        out.println(getUsernameField());
+        out.println("\r");
+
+
         data.setUsername(getUsernameField());
+        data.setSocket(socket);
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("ClientWindow.fxml"));
+        stage.setTitle("Messenger");
+        stage.setScene(new Scene(root));    
+
+
         return socket;
     }
 

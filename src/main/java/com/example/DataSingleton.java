@@ -1,10 +1,13 @@
-package com.example.Singletons;
+package com.example;
+
+import java.net.Socket;
 
 public class DataSingleton {
 
     private static final DataSingleton instance = new DataSingleton();
 
     public String username;
+    public Socket socket;
 
     private DataSingleton(){}
 
@@ -20,5 +23,11 @@ public class DataSingleton {
         return instance.username;
     }
 
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
+    public Socket getSocket() {
+        return socket;
+    }
 }
