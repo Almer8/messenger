@@ -58,12 +58,13 @@ public class ClientWindowController implements Initializable {
         objOutput.writeObject("GET_USERS");
         objOutput.flush();
         users = (List<String>) objInput.readObject();
-        for (String user:users) {
-            System.out.println(user);
-        }
+        System.out.println(data.getUsername());
+        users.removeIf(user -> user.equals(data.getUsername()));
         usersList.getItems().clear();
-        for (String user:users) {
-            usersList.getItems().add(user);
+        if(users != null) {
+            for (String user : users) {
+                usersList.getItems().add(user);
+            }
         }
     }
 
