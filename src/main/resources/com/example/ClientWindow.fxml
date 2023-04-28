@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1077.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ClientWindowController">
          <children>
@@ -19,15 +20,15 @@
                   <Font name="Times New Roman" size="22.0" />
                </font>
             </Label>
-            <Label fx:id="usernameField" alignment="CENTER" layoutX="873.0" layoutY="75.0" prefHeight="26.0" prefWidth="114.0">
+            <Label fx:id="usernameField" alignment="TOP_CENTER" layoutX="802.0" layoutY="75.0" prefHeight="112.0" prefWidth="271.0">
                <font>
                   <Font name="Times New Roman Bold" size="17.0" />
                </font>
             </Label>
       <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="786.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
+         <content>
+            <TextFlow fx:id="messageViewArea" prefHeight="584.0" prefWidth="786.0" />
+         </content>
       </ScrollPane>
       <TextArea fx:id="msg" layoutX="14.0" layoutY="603.0" prefHeight="40.0" prefWidth="677.0" />
       <Button fx:id="sendButton" layoutX="700.0" layoutY="603.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Send" />

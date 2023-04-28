@@ -23,6 +23,10 @@ public class App extends Application {
         stage.show();
     
     }
+    @Override
+    public void stop(){
+    ClientWindowController.closeConnection();
+    }
 
     
     public static void main(String[] args) {
