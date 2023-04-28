@@ -1,9 +1,11 @@
 package com.example;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -67,7 +69,8 @@ public class LoginController {
         Stage stage = (Stage) okButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("ClientWindow.fxml"));
         stage.setTitle("Messenger");
-        stage.setScene(new Scene(root));    
+        stage.setScene(new Scene(root));
+
 
 
         return socket;

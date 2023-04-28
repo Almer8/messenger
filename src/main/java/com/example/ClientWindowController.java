@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import message.Message;
+import message.MessageType;
 
 public class ClientWindowController implements Initializable {
     @FXML
@@ -55,7 +57,7 @@ public class ClientWindowController implements Initializable {
     public void refreshUsers() throws IOException, ClassNotFoundException {
         System.out.println(socket.getInetAddress().getHostAddress() + ":" +socket.getPort() + ":" + socket.getLocalPort());//
 
-        objOutput.writeObject("GET_USERS");
+        objOutput.writeObject(new Message("GET_USERS", MessageType.SERVER));
         objOutput.flush();
         users = (List<String>) objInput.readObject();
         System.out.println(data.getUsername());
