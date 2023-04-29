@@ -41,6 +41,7 @@ public class ClientWindowController implements Initializable {
         setTextToUsernameField(data.getUsername());
         socket = data.getSocket();
         try {
+            this.messageList = new ArrayList<>();
             objOutput = new ObjectOutputStream(socket.getOutputStream());
             objOutput.flush();
             objInput = new ObjectInputStream(socket.getInputStream());
@@ -57,6 +58,19 @@ public class ClientWindowController implements Initializable {
         try {
             objOutput.writeObject(message);
             objOutput.flush();
+            System.out.println("Message sent");
+            messageList.add(message);
+
+            if (usersList.getSelectionModel().getSelectedItem().equals(message.getReceiver())) {
+                Text sender = new Text("You: ");
+                Text text = new Text(message.getMessageText() + "\n\n");
+                sender.setStyle("-fx-font-weight: bold");
+                messageViewArea.getChildren().add(sender);
+                messageViewArea.getChildren().add(text);
+            }
+
+
+
         } catch (IOException e){
             System.out.println("Output exception");
         }
@@ -72,17 +86,25 @@ public class ClientWindowController implements Initializable {
 
         while (!socket.isClosed()){
         try {
+
             Message input = (Message) objInput.readObject();
 
             if(input != null) {
                 if (input.getMessageType().equals(MessageType.MESSAGE)) {
                     messageList.add(input);
-                    if (usersList.getSelectionModel().getSelectedItem().equals(input.getSender())) {
-                        Text sender = new Text(input.getSender() + ": ");
-                        Text text = new Text(input.getMessageText() + "\n\n");
-                        sender.setStyle("-fx-font-weight: bold");
-                        messageViewArea.getChildren().add(sender);
-                        messageViewArea.getChildren().add(text);
+                    System.out.println("Message added to list:");
+                    System.out.println("From " + input.getSender() + "with text" + input.getMessageText());
+                    if(usersList.getSelectionModel().getSelectedItem() != null) {
+                        if (usersList.getSelectionModel().getSelectedItem().equals(input.getSender())) {
+                            Text sender = new Text(input.getSender() + ": ");
+                            Text text = new Text(input.getMessageText() + "\n\n");
+                            sender.setStyle("-fx-font-weight: bold");
+                            System.out.println("SHIT IS ABOUT TO GET REAL");
+                            Platform.runLater(() -> {
+                                messageViewArea.getChildren().add(sender);
+                                messageViewArea.getChildren().add(text);
+                            });
+                        }
                     }
                 }
                 if (input.getMessageType().equals(MessageType.SERVER)){
