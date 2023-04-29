@@ -31,7 +31,7 @@
          </content>
       </ScrollPane>
       <TextArea fx:id="msg" layoutX="14.0" layoutY="603.0" prefHeight="40.0" prefWidth="677.0" />
-      <Button fx:id="sendButton" layoutX="700.0" layoutY="603.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Send" />
+      <Button fx:id="sendButton" layoutX="700.0" layoutY="603.0" mnemonicParsing="false" onAction="#sendMessageToUser" prefHeight="40.0" prefWidth="100.0" text="Send" />
       <Button fx:id="refreshButton" layoutX="830.0" layoutY="227.0" mnemonicParsing="false" onAction="#refreshUsers" prefHeight="40.0" prefWidth="200.0" text="Refresh" />
          </children>
       </AnchorPane>
