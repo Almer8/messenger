@@ -18,10 +18,8 @@ import message.Message;
 import message.MessageType;
 
 public class ClientWindowController implements Initializable {
-    @FXML
-    private Label usernameField;
-    @FXML
-    private Button sendButton;
+    @FXML private Label usernameField;
+    @FXML private Button sendButton;
     @FXML private TextArea msg;
     @FXML private Button refreshButton;
     @FXML private ListView<String> usersList;
@@ -53,6 +51,16 @@ public class ClientWindowController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    public void sendMessageToUser() {
+        Message message = new Message(data.getUsername(),usersList.getSelectionModel().getSelectedItem(),msg.getText(),MessageType.MESSAGE);
+        try {
+            objOutput.writeObject(message);
+            objOutput.flush();
+        } catch (IOException e){
+            System.out.println("Output exception");
+        }
+    }
     public void refreshUsers() throws IOException, ClassNotFoundException {
         System.out.println(socket.getInetAddress().getHostAddress() + ":" +socket.getPort() + ":" + socket.getLocalPort());//
 
@@ -70,7 +78,10 @@ public class ClientWindowController implements Initializable {
                 if (input.getMessageType().equals(MessageType.MESSAGE)) {
                     messageList.add(input);
                     if (usersList.getSelectionModel().getSelectedItem().equals(input.getSender())) {
+                        Text sender = new Text(input.getSender() + ": ");
                         Text text = new Text(input.getMessageText() + "\n\n");
+                        sender.setStyle("-fx-font-weight: bold");
+                        messageViewArea.getChildren().add(sender);
                         messageViewArea.getChildren().add(text);
                     }
                 }
@@ -94,19 +105,19 @@ public class ClientWindowController implements Initializable {
             socket.close();
             }
             catch (Exception ex){
-                System.out.println(ex);
+                System.out.println("Double socket closing?");//
             }
 
         }
         }
 
     }
-public static void closeConnection(){
-        try {
-        socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-}
+    public static void closeConnection(){
+            try {
+            socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+    }
 
 }
