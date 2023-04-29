@@ -27,7 +27,6 @@ public class App extends Application {
     public void stop(){
     ClientWindowController.closeConnection();
     }
-
     
     public static void main(String[] args) {
         launch();

@@ -13,7 +13,7 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" layoutX="830.0" layoutY="267.0" prefHeight="352.0" prefWidth="200.0">
          <content>
-            <ListView fx:id="usersList" prefHeight="352.0" prefWidth="200.0" />
+            <ListView fx:id="usersList" onMouseClicked="#refreshMessages" prefHeight="352.0" prefWidth="200.0" />
          </content></ScrollPane>
             <Label alignment="CENTER" layoutX="830.0" layoutY="37.0" prefHeight="25.0" prefWidth="194.0" text="Your username is">
                <font>

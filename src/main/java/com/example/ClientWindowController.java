@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import message.Message;
@@ -28,9 +29,11 @@ public class ClientWindowController implements Initializable {
     private List<Message> messageList;
     private ObjectInputStream objInput;
     private ObjectOutputStream objOutput;
+    private int selectedIndex = 0;
 
     DataSingleton data = DataSingleton.getInstance();
     List<String> users = new ArrayList<>();
+
     public void setTextToUsernameField(String text){
     usernameField.setText(text);
 
@@ -46,7 +49,6 @@ public class ClientWindowController implements Initializable {
             objOutput.flush();
             objInput = new ObjectInputStream(socket.getInputStream());
             objOutput.writeObject(data.getUsername());
-
             new Thread(this::listener).start();
 
         } catch (IOException e) {
@@ -94,7 +96,7 @@ public class ClientWindowController implements Initializable {
                 if (input.getMessageType().equals(MessageType.MESSAGE)) {
                     messageList.add(input);
                     System.out.println("Message added to list:");
-                    System.out.println("From " + input.getSender() + "with text" + input.getMessageText());
+                    System.out.println("From " + input.getSender() + " with text " + input.getMessageText());
                     if(usersList.getSelectionModel().getSelectedItem() != null) {
                         if (usersList.getSelectionModel().getSelectedItem().equals(input.getSender())) {
                             Text sender = new Text(input.getSender() + ": ");
@@ -119,6 +121,12 @@ public class ClientWindowController implements Initializable {
                             }
                         }
                     }
+                    if (input.getMessageText().equals("REFRESH_MESSAGES")){
+                    List<Message> messages = (List<Message>) objInput.readObject();
+                        System.out.println("GOT LIST");
+
+
+                    }
                 }
             }
 
@@ -142,4 +150,13 @@ public class ClientWindowController implements Initializable {
             }
     }
 
+    public void refreshMessages(MouseEvent mouseEvent) throws IOException {
+        if(usersList.getSelectionModel().getSelectedIndex() != selectedIndex){
+            selectedIndex = usersList.getSelectionModel().getSelectedIndex();
+            messageViewArea.getChildren().clear();
+            objOutput.writeObject(new Message(data.getUsername(),usersList.getSelectionModel().getSelectedItem(),"REFRESH_MESSAGES",MessageType.SERVER));
+            objOutput.flush();
+        }
+
+    }
 }
