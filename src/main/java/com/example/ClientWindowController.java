@@ -45,6 +45,7 @@ public class ClientWindowController implements Initializable {
             objOutput = new ObjectOutputStream(socket.getOutputStream());
             objOutput.flush();
             objInput = new ObjectInputStream(socket.getInputStream());
+            objOutput.writeObject(data.getUsername());
 
             new Thread(this::listener).start();
 
