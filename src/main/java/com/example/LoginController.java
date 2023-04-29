@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -59,10 +60,6 @@ public class LoginController {
         
         try{
         Socket socket = new Socket(getIP(), getPort());
-        PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
-        out.println(getUsernameField());
-        out.println("\r");
-
 
         data.setUsername(getUsernameField());
         data.setSocket(socket);
