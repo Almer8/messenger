@@ -29,7 +29,7 @@ public class ClientWindowController implements Initializable {
     private List<Message> messageList;
     private ObjectInputStream objInput;
     private ObjectOutputStream objOutput;
-    private int selectedIndex = 0;
+    private int selectedIndex = -1;
 
     DataSingleton data = DataSingleton.getInstance();
     List<String> users = new ArrayList<>();
@@ -100,7 +100,7 @@ public class ClientWindowController implements Initializable {
                     if(usersList.getSelectionModel().getSelectedItem() != null) {
                         if (usersList.getSelectionModel().getSelectedItem().equals(input.getSender())) {
                             Text sender = new Text(input.getSender() + ": ");
-                            Text text = new Text(input.getMessageText() + "\n\n");
+                            Text text = new Text(input.getMessageText() + "\n");
                             sender.setStyle("-fx-font-weight: bold");
                             Platform.runLater(() -> {
                                 messageViewArea.getChildren().add(sender);
@@ -124,6 +124,10 @@ public class ClientWindowController implements Initializable {
                     if (input.getMessageText().equals("REFRESH_MESSAGES")){
                     List<Message> messages = (List<Message>) objInput.readObject();
                         System.out.println("GOT LIST");
+                        for (Message message:
+                             messages) {
+                            //System.out.println("From " + message.getSender() + " with text " + message.getMessageText());
+                        }
 
 
                     }
@@ -153,9 +157,27 @@ public class ClientWindowController implements Initializable {
     public void refreshMessages(MouseEvent mouseEvent) throws IOException {
         if(usersList.getSelectionModel().getSelectedIndex() != selectedIndex){
             selectedIndex = usersList.getSelectionModel().getSelectedIndex();
+            String selectedItem = usersList.getSelectionModel().getSelectedItem();
             messageViewArea.getChildren().clear();
-            objOutput.writeObject(new Message(data.getUsername(),usersList.getSelectionModel().getSelectedItem(),"REFRESH_MESSAGES",MessageType.SERVER));
-            objOutput.flush();
+
+            for (Message message:messageList) {
+                if(message.getSender().equals(data.getUsername()) && message.getReceiver().equals(selectedItem)){
+
+                    Text sender = new Text("You: ");
+                    Text text = new Text(message.getMessageText() + "\n");
+                    sender.setStyle("-fx-font-weight: bold");
+                    messageViewArea.getChildren().add(sender);
+                    messageViewArea.getChildren().add(text);
+                } else if(message.getSender().equals(selectedItem) && message.getReceiver().equals(data.getUsername())){
+                    Text sender = new Text(message.getSender() + ": ");
+                    Text text = new Text(message.getMessageText() + "\n");
+                    sender.setStyle("-fx-font-weight: bold");
+                    Platform.runLater(() -> {
+                        messageViewArea.getChildren().add(sender);
+                        messageViewArea.getChildren().add(text);
+                    });
+                }
+            }
         }
 
     }
