@@ -63,25 +63,26 @@ public class ClientWindowController implements Initializable {
     }
     @FXML
     public void sendMessageToUser() {
-        Message message = new Message(data.getUsername(),usersList.getSelectionModel().getSelectedItem(),msg.getText(),MessageType.MESSAGE);
-        try {
-            objOutput.writeObject(message);
-            objOutput.flush();
-            System.out.println("Message sent");
-            messageList.add(message);
-            msg.clear();
-            if (usersList.getSelectionModel().getSelectedItem().equals(message.getReceiver())) {
-                Text sender = new Text("You: ");
-                Text text = new Text(message.getMessageText() + "\n");
-                sender.setStyle("-fx-font-weight: bold");
-                messageViewArea.getChildren().add(sender);
-                messageViewArea.getChildren().add(text);
+        if (usersList.getSelectionModel().getSelectedIndex() >=0) {
+            Message message = new Message(data.getUsername(), usersList.getSelectionModel().getSelectedItem(), msg.getText(), MessageType.MESSAGE);
+            try {
+                objOutput.writeObject(message);
+                objOutput.flush();
+                System.out.println("Message sent");
+                messageList.add(message);
+                msg.clear();
+                if (usersList.getSelectionModel().getSelectedItem().equals(message.getReceiver())) {
+                    Text sender = new Text("You: ");
+                    Text text = new Text(message.getMessageText() + "\n");
+                    sender.setStyle("-fx-font-weight: bold");
+                    messageViewArea.getChildren().add(sender);
+                    messageViewArea.getChildren().add(text);
+                }
+
+
+            } catch (IOException e) {
+                System.out.println("Output exception");
             }
-
-
-
-        } catch (IOException e){
-            System.out.println("Output exception");
         }
     }
     public void refreshUsers() throws IOException, ClassNotFoundException {
@@ -120,12 +121,14 @@ public class ClientWindowController implements Initializable {
                         users = (List<String>) objInput.readObject();
                         System.out.println(data.getUsername());
                         users.removeIf(user -> user.equals(data.getUsername()));
+                        Platform.runLater(() ->{
                         usersList.getItems().clear();
                         if (users != null) {
                             for (String user : users) {
                                 usersList.getItems().add(user);
                             }
                         }
+                        });
                     }
                     if (input.getMessageText().equals("DUPLICATE_USER")){
                         usernameField.setTextFill(Color.RED);
