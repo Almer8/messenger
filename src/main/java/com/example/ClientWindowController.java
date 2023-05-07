@@ -1,22 +1,27 @@
 package com.example;
 
-import java.io.*;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import message.Message;
+import message.MessageType;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import message.Message;
-import message.MessageType;
 
 public class ClientWindowController implements Initializable {
     @FXML private Label usernameField;
@@ -49,6 +54,7 @@ public class ClientWindowController implements Initializable {
             objOutput.flush();
             objInput = new ObjectInputStream(socket.getInputStream());
             objOutput.writeObject(data.getUsername());
+            objOutput.flush();
             new Thread(this::listener).start();
 
         } catch (IOException e) {
@@ -63,10 +69,10 @@ public class ClientWindowController implements Initializable {
             objOutput.flush();
             System.out.println("Message sent");
             messageList.add(message);
-
+            msg.clear();
             if (usersList.getSelectionModel().getSelectedItem().equals(message.getReceiver())) {
                 Text sender = new Text("You: ");
-                Text text = new Text(message.getMessageText() + "\n\n");
+                Text text = new Text(message.getMessageText() + "\n");
                 sender.setStyle("-fx-font-weight: bold");
                 messageViewArea.getChildren().add(sender);
                 messageViewArea.getChildren().add(text);
@@ -121,15 +127,10 @@ public class ClientWindowController implements Initializable {
                             }
                         }
                     }
-                    if (input.getMessageText().equals("REFRESH_MESSAGES")){
-                    List<Message> messages = (List<Message>) objInput.readObject();
-                        System.out.println("GOT LIST");
-                        for (Message message:
-                             messages) {
-                            //System.out.println("From " + message.getSender() + " with text " + message.getMessageText());
-                        }
-
-
+                    if (input.getMessageText().equals("DUPLICATE_USER")){
+                        usernameField.setTextFill(Color.RED);
+                        usernameField.setText("This user already exists!\n Closing the connection...");
+                        closeConnection();
                     }
                 }
             }
