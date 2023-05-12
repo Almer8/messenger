@@ -85,13 +85,6 @@ public class ClientWindowController implements Initializable {
             }
         }
     }
-    public void refreshUsers() throws IOException, ClassNotFoundException {
-        System.out.println(socket.getInetAddress().getHostAddress() + ":" +socket.getPort() + ":" + socket.getLocalPort());//
-
-        objOutput.writeObject(new Message(MessageType.SERVER, "GET_USERS"));
-        objOutput.flush();
-    }
-
     public void listener(){
 
         while (!socket.isClosed()){

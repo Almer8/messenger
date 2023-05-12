@@ -11,9 +11,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1077.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ClientWindowController">
          <children>
-            <ScrollPane hbarPolicy="NEVER" layoutX="830.0" layoutY="267.0" prefHeight="352.0" prefWidth="200.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="830.0" layoutY="194.0" prefHeight="425.0" prefWidth="200.0">
          <content>
-            <ListView fx:id="usersList" onMouseClicked="#refreshMessages" prefHeight="352.0" prefWidth="200.0" />
+            <ListView fx:id="usersList" onMouseClicked="#refreshMessages" prefHeight="425.0" prefWidth="200.0" />
          </content></ScrollPane>
             <Label alignment="CENTER" layoutX="830.0" layoutY="37.0" prefHeight="25.0" prefWidth="194.0" text="Your username is">
                <font>
@@ -32,6 +32,5 @@
       </ScrollPane>
       <TextArea fx:id="msg" layoutX="14.0" layoutY="603.0" prefHeight="40.0" prefWidth="677.0" />
       <Button fx:id="sendButton" layoutX="700.0" layoutY="603.0" mnemonicParsing="false" onAction="#sendMessageToUser" prefHeight="40.0" prefWidth="100.0" text="Send" />
-      <Button fx:id="refreshButton" layoutX="830.0" layoutY="227.0" mnemonicParsing="false" onAction="#refreshUsers" prefHeight="40.0" prefWidth="200.0" text="Refresh" />
          </children>
       </AnchorPane>
