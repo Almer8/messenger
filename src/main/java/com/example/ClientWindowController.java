@@ -98,6 +98,7 @@ public class ClientWindowController implements Initializable {
         try {
 
             Message input = (Message) objInput.readObject();
+            System.out.println(input.getMessageType().toString() + " " + input.getMessageText());
 
             if(input != null) {
                 if (input.getMessageType().equals(MessageType.MESSAGE)) {
@@ -118,13 +119,18 @@ public class ClientWindowController implements Initializable {
                 }
                 if (input.getMessageType().equals(MessageType.SERVER)){
                     if(input.getMessageText().equals("GET_USERS")) {
-                        users = (List<String>) objInput.readObject();
-                        System.out.println(data.getUsername());
-                        users.removeIf(user -> user.equals(data.getUsername()));
+                        List<String> newusers = (List<String>) objInput.readObject();
+                        for (String user:newusers) {
+                            if(!users.contains(user)){
+                                users.add(user);
+                            }
+                        }
+
+                        //users.removeIf(user -> user.equals(data.getUsername()));
                         Platform.runLater(() ->{
-                        usersList.getItems().clear();
                         if (users != null) {
                             for (String user : users) {
+                                if (!usersList.getItems().contains(user))
                                 usersList.getItems().add(user);
                             }
                         }
