@@ -164,22 +164,23 @@ public class ClientWindowController implements Initializable {
             messageViewArea.getChildren().clear();
 
             for (Message message:messageList) {
+                Text sender = new Text("");
+                Text text = new Text("");
                 if(message.getSender().equals(data.getUsername()) && message.getReceiver().equals(selectedItem)){
 
-                    Text sender = new Text("You: ");
-                    Text text = new Text(message.getMessageText() + "\n");
-                    sender.setStyle("-fx-font-weight: bold");
-                    messageViewArea.getChildren().add(sender);
-                    messageViewArea.getChildren().add(text);
+                    sender = new Text("You: ");
+                    text = new Text(message.getMessageText() + "\n");
                 } else if(message.getSender().equals(selectedItem) && message.getReceiver().equals(data.getUsername())){
-                    Text sender = new Text(message.getSender() + ": ");
-                    Text text = new Text(message.getMessageText() + "\n");
-                    sender.setStyle("-fx-font-weight: bold");
-                    Platform.runLater(() -> {
-                        messageViewArea.getChildren().add(sender);
-                        messageViewArea.getChildren().add(text);
-                    });
+                    sender = new Text(message.getSender() + ": ");
+                    text = new Text(message.getMessageText() + "\n");
                 }
+                Text finalText = text;
+                Text finalSender = sender;
+                Platform.runLater(() -> {
+                    finalSender.setStyle("-fx-font-weight: bold");
+                    messageViewArea.getChildren().add(finalSender);
+                    messageViewArea.getChildren().add(finalText);
+                });
             }
         }
 
